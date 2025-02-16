@@ -13,7 +13,7 @@
 # Credit goes to Drew - JustAGuyLinux - https://justaguylinux.com/
 # 
 # Source Repository: https://github.com/linuxshell-co-za/
-# Source Location: /install_scripts/ghostty_installer.sh
+# Source Location: /install_scripts/install_ghostty.sh
 #
 # Dependencies:
 #   - apt (package manager)
@@ -21,7 +21,7 @@
 #   - git
 #   - sudo privileges
 #
-# Usage: ./ghostty_installer.sh
+# Usage: ./install_ghostty.sh
 #
 # Notes:
 #   - Requires root/sudo privileges for installation
