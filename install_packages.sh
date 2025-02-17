@@ -59,16 +59,20 @@ install_packages() {
 # File Managers
 file_managers=("thunar" "pcmanfm" "krusader" "nautilus" "nemo" "dolphin" "ranger" "nnn" "lf")
 
-echo -e "${BLUE}Choose File Managers to install (space-separated list, e.g., 1 3 5):${NC}"
+echo -e "\n${BLUE}Choose File Managers to install (space-separated list, e.g., 1 3 5):${NC}"
 for i in "${!file_managers[@]}"; do
-    echo -e "${CYAN}$((i+1)). ${file_managers[i]}${NC}"
+    echo -e "${CYAN}$((i+1)). ${file_managers[$i]}${NC}"
 done
 read -rp "Selection: " file_manager_selection
 
 selected_file_managers=()
 for index in $file_manager_selection; do
-    selected_file_managers+=("${file_managers[index-1]}")
+    if [[ $index -gt 0 && $index -le ${#file_managers[@]} ]]; then
+        selected_file_managers+=("${file_managers[$((index-1))]}")
+    fi
 done
+
+
 
 # Graphics
 graphics=("gimp" "flameshot" "eog" "sxiv" "qimgv" "inkscape" "scrot")
