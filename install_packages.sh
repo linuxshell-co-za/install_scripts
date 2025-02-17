@@ -54,68 +54,70 @@ install_packages() {
     sudo apt update && sudo apt install -y "$@"
 }
 
-# Function to display menu
+# Function to display menu and get selection
 display_menu() {
     local options=("$@")
-    local prompt_message=$1
-    shift
-    echo -e "${CYAN}$prompt_message${NC}"
     for i in "${!options[@]}"; do
-        echo -e "${YELLOW}$((i+1)). ${options[i]}${NC}"
+        echo -e "${YELLOW}  $((i + 1)). ${options[i]}${NC}"
     done
-    read -rp "Selection (space-separated): " selection
-    echo $selection
+    echo ""
+    read -rp "Enter the numbers of your choices (space-separated): " selection
+    echo "$selection"
 }
 
-# Function to collect user's selections
-collect_selections() {
-    local selection=($1) # List of selected indices
-    local options=("${!2}") # Reference to items array
+# Function to convert user selection into package list
+get_selected_packages() {
+    local selection=($1) # User's selection (space-separated indices)
+    local options=("${!2}") # Reference to the list of options
     local selected_items=()
     for index in "${selection[@]}"; do
-        selected_items+=("${options[index-1]}")
+        # Ensure valid index (e.g., user didn't enter an invalid number)
+        if [[ $index -gt 0 && $index -le ${#options[@]} ]]; then
+            selected_items+=("${options[index-1]}")
+        fi
     done
     echo "${selected_items[@]}"
 }
 
 # File Managers
 file_managers=("thunar" "pcmanfm" "krusader" "nautilus" "nemo" "dolphin" "ranger" "nnn" "lf")
-file_manager_selection=$(display_menu "Choose File Managers to install:" "${file_managers[@]}")
-selected_file_managers=($(collect_selections "$file_manager_selection" file_managers[@]))
+echo -e "${CYAN}Choose File Managers to install:${NC}"
+file_manager_selection=$(display_menu "${file_managers[@]}")
+selected_file_managers=($(get_selected_packages "$file_manager_selection" file_managers[@]))
 
 # Graphics
 graphics=("gimp" "flameshot" "eog" "sxiv" "qimgv" "inkscape" "scrot")
-graphics_selection=$(display_menu "Choose Graphics Applications to install:" "${graphics[@]}")
-selected_graphics=($(collect_selections "$graphics_selection" graphics[@]))
+echo -e "${CYAN}Choose Graphics Applications to install:${NC}"
+graphics_selection=$(display_menu "${graphics[@]}")
+selected_graphics=($(get_selected_packages "$graphics_selection" graphics[@]))
 
 # Terminals
 terminals=("alacritty" "gnome-terminal" "kitty" "konsole" "terminator" "xfce4-terminal")
-terminal_selection=$(display_menu "Choose Terminals to install:" "${terminals[@]}")
-selected_terminals=($(collect_selections "$terminal_selection" terminals[@]))
+echo -e "${CYAN}Choose Terminals to install:${NC}"
+terminal_selection=$(display_menu "${terminals[@]}")
+selected_terminals=($(get_selected_packages "$terminal_selection" terminals[@]))
 
 # Text Editors
 text_editors=("geany" "kate" "gedit" "l3afpad" "mousepad" "pluma")
-text_editor_selection=$(display_menu "Choose Text Editors to install:" "${text_editors[@]}")
-selected_text_editors=($(collect_selections "$text_editor_selection" text_editors[@]))
+echo -e "${CYAN}Choose Text Editors to install:${NC}"
+text_editor_selection=$(display_menu "${text_editors[@]}")
+selected_text_editors=($(get_selected_packages "$text_editor_selection" text_editors[@]))
 
 # Multimedia
 multimedia=("mpv" "vlc" "audacity" "kdenlive" "obs-studio" "rhythmbox" "ncmpcpp" "mkvtoolnix-gui")
-multimedia_selection=$(display_menu "Choose Multimedia Applications to install:" "${multimedia[@]}")
-selected_multimedia=($(collect_selections "$multimedia_selection" multimedia[@]))
+echo -e "${CYAN}Choose Multimedia Applications to install:${NC}"
+multimedia_selection=$(display_menu "${multimedia[@]}")
+selected_multimedia=($(get_selected_packages "$multimedia_selection" multimedia[@]))
 
 # Utilities
 utilities=("gparted" "gnome-disk-utility" "neofetch" "nitrogen" "numlockx" "galculator" "cpu-x" "udns-utils" "whois" "curl" "tree" "btop" "htop" "bat" "brightnessctl" "redshift" "nettools")
-utilities_selection=$(display_menu "Choose Utilities Applications to install:" "${utilities[@]}")
-selected_utilities=($(collect_selections "$utilities_selection" utilities[@]))
+echo -e "${CYAN}Choose Utilities Applications to install:${NC}"
+utilities_selection=$(display_menu "${utilities[@]}")
+selected_utilities=($(get_selected_packages "$utilities_selection" utilities[@]))
 
-# Summary of selections and installation
+# Print summary of selections
 echo -e "${GREEN}You have selected the following packages to install:${NC}"
 echo -e "${CYAN}File Managers:${NC} ${selected_file_managers[*]}"
 echo -e "${CYAN}Graphics Applications:${NC} ${selected_graphics[*]}"
 echo -e "${CYAN}Terminals:${NC} ${selected_terminals[*]}"
-echo -e "${CYAN}Text Editors:${NC} ${selected_text_editors[*]}"
-echo -e "${CYAN}Multimedia Applications:${NC} ${selected_multimedia[*]}"
-echo -e "${CYAN}Utilities:${NC} ${selected_utilities[*]}"
-
-# Install selected packages
-install_packages "${selected_file_managers[@]}" "${selected_graphics[@]}" "${selected_terminals[@]}" "${selected_text_editors[@]}" "${selected_multimedia[@]}" "${selected_utilities[@]}"
+echo -e "${CYAN}Text Editors:${NC} ${selected_text_edit
