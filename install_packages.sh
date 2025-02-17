@@ -41,83 +41,104 @@
 #
 #=======================================================================================
 
-# Colors for text formatting
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+# Define colors
+RED='\e[31m'
+GREEN='\e[32m'
+YELLOW='\e[33m'
+BLUE='\e[34m'
+MAGENTA='\e[35m'
+CYAN='\e[36m'
+LIGHT_CYAN='\e[96m'
+NC='\e[0m' # No Color (reset)
 
 # Function to install selected packages
 install_packages() {
-    echo -e "${GREEN}Installing selected packages...${NC}"
-    sudo apt update && sudo apt install -y "$@"
-}
-
-# Function to display menu and get selection
-display_menu() {
-    local options=("$@")
-    for i in "${!options[@]}"; do
-        echo -e "${YELLOW}  $((i + 1)). ${options[i]}${NC}"
-    done
-    echo ""
-    read -rp "Enter the numbers of your choices (space-separated): " selection
-    echo "$selection"
-}
-
-# Function to convert user selection into package list
-get_selected_packages() {
-    local selection=($1) # User's selection (space-separated indices)
-    local options=("${!2}") # Reference to the list of options
-    local selected_items=()
-    for index in "${selection[@]}"; do
-        # Ensure valid index (e.g., user didn't enter an invalid number)
-        if [[ $index -gt 0 && $index -le ${#options[@]} ]]; then
-            selected_items+=("${options[index-1]}")
-        fi
-    done
-    echo "${selected_items[@]}"
+    sudo apt install -y "$@"
 }
 
 # File Managers
 file_managers=("thunar" "pcmanfm" "krusader" "nautilus" "nemo" "dolphin" "ranger" "nnn" "lf")
-echo -e "${CYAN}Choose File Managers to install:${NC}"
-file_manager_selection=$(display_menu "${file_managers[@]}")
-selected_file_managers=($(get_selected_packages "$file_manager_selection" file_managers[@]))
+
+echo -e "${BLUE}Choose File Managers to install (space-separated list, e.g., 1 3 5):${NC}"
+for i in "${!file_managers[@]}"; do
+    echo -e "${CYAN}$((i+1)). ${file_managers[i]}${NC}"
+done
+read -rp "Selection: " file_manager_selection
+
+selected_file_managers=()
+for index in $file_manager_selection; do
+    selected_file_managers+=("${file_managers[index-1]}")
+done
 
 # Graphics
 graphics=("gimp" "flameshot" "eog" "sxiv" "qimgv" "inkscape" "scrot")
-echo -e "${CYAN}Choose Graphics Applications to install:${NC}"
-graphics_selection=$(display_menu "${graphics[@]}")
-selected_graphics=($(get_selected_packages "$graphics_selection" graphics[@]))
+
+echo -e "${GREEN}Choose graphics applications to install (space-separated list, e.g., 1 3 5):${NC}"
+for i in "${!graphics[@]}"; do
+    echo -e "${CYAN}$((i+1)). ${graphics[i]}${NC}"
+done
+read -rp "Selection: " graphics_selection
+
+selected_graphics=()
+for index in $graphics_selection; do
+    selected_graphics+=("${graphics[index-1]}")
+done
 
 # Terminals
-terminals=("alacritty" "gnome-terminal" "kitty" "konsole" "terminator" "xfce4-terminal")
-echo -e "${CYAN}Choose Terminals to install:${NC}"
-terminal_selection=$(display_menu "${terminals[@]}")
-selected_terminals=($(get_selected_packages "$terminal_selection" terminals[@]))
+terminals=("alacritty" "gnome-terminal" "kitty" "konsole" "terminator" "xfce4-terminal" )
+
+echo -e "${MAGENTA}Choose Terminals to install (space-separated list, e.g., 1 3):${NC}"
+for i in "${!terminals[@]}"; do
+    echo -e "${CYAN}$((i+1)). ${terminals[i]}${NC}"
+done
+read -rp "Selection: " terminal_selection
+
+selected_terminals=()
+for index in $terminal_selection; do
+    selected_terminals+=("${terminals[index-1]}")
+done
 
 # Text Editors
 text_editors=("geany" "kate" "gedit" "l3afpad" "mousepad" "pluma")
-echo -e "${CYAN}Choose Text Editors to install:${NC}"
-text_editor_selection=$(display_menu "${text_editors[@]}")
-selected_text_editors=($(get_selected_packages "$text_editor_selection" text_editors[@]))
+
+echo -e "${YELLOW}Choose Text Editors to install (space-separated list, e.g., 1 3 5):${NC}"
+for i in "${!text_editors[@]}"; do
+    echo -e "${CYAN}$((i+1)). ${text_editors[i]}${NC}"
+done
+read -rp "Selection: " text_editor_selection
+
+selected_text_editors=()
+for index in $text_editor_selection; do
+    selected_text_editors+=("${text_editors[index-1]}")
+done
 
 # Multimedia
 multimedia=("mpv" "vlc" "audacity" "kdenlive" "obs-studio" "rhythmbox" "ncmpcpp" "mkvtoolnix-gui")
-echo -e "${CYAN}Choose Multimedia Applications to install:${NC}"
-multimedia_selection=$(display_menu "${multimedia[@]}")
-selected_multimedia=($(get_selected_packages "$multimedia_selection" multimedia[@]))
 
-# Utilities
-utilities=("gparted" "gnome-disk-utility" "neofetch" "nitrogen" "numlockx" "galculator" "cpu-x" "udns-utils" "whois" "curl" "tree" "btop" "htop" "bat" "brightnessctl" "redshift" "nettools")
-echo -e "${CYAN}Choose Utilities Applications to install:${NC}"
-utilities_selection=$(display_menu "${utilities[@]}")
-selected_utilities=($(get_selected_packages "$utilities_selection" utilities[@]))
+echo -e "${RED}Choose Multimedia applications to install (space-separated list, e.g., 1 3 5):${NC}"
+for i in "${!multimedia[@]}"; do
+    echo -e "${CYAN}$((i+1)). ${multimedia[i]}${NC}"
+done
+read -rp "Selection: " multimedia_selection
 
-# Print summary of selections
-echo -e "${GREEN}You have selected the following packages to install:${NC}"
-echo -e "${CYAN}File Managers:${NC} ${selected_file_managers[*]}"
-echo -e "${CYAN}Graphics Applications:${NC} ${selected_graphics[*]}"
-echo -e "${CYAN}Terminals:${NC} ${selected_terminals[*]}"
-echo -e "${CYAN}Text Editors:${NC} ${selected_text_edit
+selected_multimedia=()
+for index in $multimedia_selection; do
+    selected_multimedia+=("${multimedia[index-1]}")
+done
+
+# utilities
+utilities=( "gparted" "gnome-disk-utility" "neofetch" "nitrogen" "numlockx" "galculator" "cpu-x" "udns-utils" "whois" "curl" "tree" "btop" "htop" "bat" "brightnessctl" "redshift" ) 
+
+echo -e "${LIGHT_CYAN}Choose utilities applications to install (space-separated list, e.g., 1 3 5):${NC}"
+for i in "${!utilities[@]}"; do
+    echo -e "${CYAN}$((i+1)). ${utilities[i]}${NC}"
+done
+read -rp "Selection: " utilities_selection
+
+selected_utilities=()
+for index in $utilities_selection; do
+    selected_utilities+=("${utilities[index-1]}")
+done
+
+# Install selected packages
+install_packages "${selected_file_managers[@]}" "${selected_graphics[@]}" "${selected_terminals[@]}" "${selected_text_editors[@]}" "${selected_multimedia[@]}" "${selected_utilities[@]}"
