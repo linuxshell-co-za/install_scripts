@@ -2,12 +2,13 @@
 
 ## Script Info
 
-**install_ghostty.sh** - a clean approach to installing **ghostty** on Debian including all dependencies.
+**install_ghostty.sh** - a clean approach to installing **ghostty** on Debian including all dependencies
 
-**install_fonts.sh** - installs a pre-defined list of fonts.
+**install_fonts.sh** - installs a pre-defined list of fonts
 
-**install_packages.sh** - menu-driven list of packages that can be installed.
+**install_packages.sh** - menu-driven list of packages that can be installed
 
+**install_nala.sh** - install nala as an alternative to apt
 
 ## Getting the Repo & executing the scripts
 In most cases, the following should work just fine:-
