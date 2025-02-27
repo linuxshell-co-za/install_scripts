@@ -10,7 +10,7 @@
 
 **install_nala.sh** - install nala as an alternative to apt
 
-## Getting the Repo & executing the scripts
+## Cloning the Repo & executing the scripts
 In most cases, the following should work just fine:-
 <code>
 git clone https://github.com/linuxshell-co-za/install_scripts
